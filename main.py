@@ -1,7 +1,3 @@
-# coding=utf-8
-import codecs
-import os
-
 import pandas as pd
 
 from selenium.webdriver import Firefox
@@ -18,23 +14,6 @@ key_details_engine = 3
 
 car_db = []
 browser = None
-
-# def get_page_info(url, desc, year, make, model, badge, series, price, kms, body, engine, trans):
-#     # These need to be arrays
-#     page_info = pd.DataFrame({
-#         'Make': make,
-#         'Model': model,
-#         'Badge': badge,
-#         'Series': series,
-#         'Price': price,
-#         'Odometer': kms,
-#         'Year': year,
-#         'Body': body,
-#         'Engine': engine,
-#         'Trans': trans,
-#         'Desc': desc,
-#         'link': url})
-#     print(page_info)
 
 def wait_for_page_cmd(fun, argument, timeout, attempts):
     result = None
@@ -131,11 +110,6 @@ def scrape_target_url(page):
             kms = '0'
         car_db.append(Car(make, model, badge, series, price, kms, year, body, engine, trans, desc, category, url))
 
-    # else:
-    #     print "Some other web elements were found check page source!"
-    #     for listing in listings:
-    #         print str(listing)
-
     pagination = wait_for_page_cmd(browser.find_elements_by_class_name, 'pagination', 1, 3)
     # pagination_pages = wait_for_page_cmd(pagination[0].find_elements_by_class_name, 'page-item', 1, 3)
 
@@ -154,19 +128,10 @@ def scrape_target_url(page):
         return
 
     if not attrs['class'] == 'page-link next disabled':
-        #print "Clicking Next"
         next.click()
-        #sleep(3)
         scrape_target_url(page+1)
     else:
         return
-
-
-#for car in car_db:
-    #attrs = vars(car)
-    # now dump this in some way or another
-    #print(', '.join("%s: %s" % item for item in attrs.items()))
-
 
 if __name__ == '__main__':
 
@@ -214,14 +179,9 @@ if __name__ == '__main__':
         pd.set_option('display.colheader_justify', 'center')
         pd.set_option('display.precision', 3)
         pd.set_option('display.max_colwidth', 350)
-
-        #pd.set_option('display.width', 320)
-
-
-        #pd.set_option('display.max_columns', 10)
         df = pd.read_csv('db_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}.csv'.format(CONDITION, CATEGORY, MAKE, MODEL, BADGE, SERIES, STATE, REGION, TRANSMISSION))
                    # Price , Kms, Year
-        jacks_move = [3.2, 1.8, 1]
+        my_move = [3.2, 1.8, 1]
         best_value = [7, 3, 1]
         newer_car = [2.5, 1, 2]
 
@@ -229,7 +189,7 @@ if __name__ == '__main__':
         kms_only = [1, 100, 1]
         year_only = [1, 1, 100]
 
-        scalars = jacks_move
+        scalars = my_move
 
         #df = df[df.Trans == 'Automatic']
 
